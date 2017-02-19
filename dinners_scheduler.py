@@ -12,17 +12,30 @@ def auth_check(username, passwd):
 
 class Dinners:
   def __init__(self):
-    self.dinners_range = range(12,18)
-    self.limit_people_for_slot = 3
-    self.dinners_timeslots = [str(i) for i in self.dinners_range]
-    self.dinners_schedule = {}
+    ## Defining constants
+    self.DINNERS_RANGE = range(12,18)
+    self.LIMIT_PEOPLE_FOR_SLOT = 3
+    ## Other vars
+    self.peolpe_in_schedule = []
+    ##
+    ## The following is a class logic
+    ##
+    self.dinners_timeslots = [str(i) for i in self.DINNERS_RANGE]
+    ##
+    ## Type of self.dinners_schedule is dict:
+    ## The structure of self.dinners_schedule: {timeslot0: (set of people), timeslot1: (set of people) ...}
+    self.dinners_schedule = {} 
     for i in self.dinners_timeslots:
-      self.dinners_schedule[i] = []
+      self.dinners_schedule[i] = ()
 
   def sched_update(self, who, desired_timeslot):
-    print(self.dinners_schedule[desired_timeslot])
-    if len(self.dinners_schedule[desired_timeslot]) < self.limit_people_for_slot:
-      self.dinners_schedule[desired_timeslot].append(who)
+    if len(self.dinners_schedule[desired_timeslot]) < self.LIMIT_PEOPLE_FOR_SLOT:
+      if who not in self.peolpe_in_schedule:
+        self.peolpe_in_schedule.append(who)
+        self.dinners_schedule[desired_timeslot]+=who,
+      else:
+        self.dinners_schedule[desired_timeslot]+=who,
+        #and need remove previos record in schedule
 
   def shed_view(self):
     for key in sorted(self.dinners_schedule):
@@ -46,5 +59,18 @@ if __name__=='__main__':
   print(d.dinners_schedule)
   d.shed_view()
   d.sched_update('Nm', '13')
+  print(d.dinners_schedule)
+  d.shed_view()
+
+  d.sched_update('MRe', '15')
+  print(d.dinners_schedule)
+  d.shed_view()
+  d.sched_update('Ar', '15')
+  print(d.dinners_schedule)
+  d.shed_view()
+  d.sched_update('Ps', '15')
+  print(d.dinners_schedule)
+  d.shed_view()
+  d.sched_update('Nm', '15')
   print(d.dinners_schedule)
   d.shed_view()
